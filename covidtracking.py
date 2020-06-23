@@ -18,22 +18,25 @@ plt.style.use({
         "figure.figsize":[12, 8],
     })
 
-def testcount_corrected(statelist=None):
+def testcount_corrected(statelist=None, fromdate="2020-04-01"):
     """Give plots for listed state(s) for total number of positives (by day) and PERCENT of positives (by day) 
     Shows how testing volume is influencing results (or not).
     
     Inputs:
         statelist  : list-like object giving states for which plots should be made
+    Optional Inputs:
+        fromdate   : YYYY-MM-DD formatted string saying the first date of results to show (note, March values
+                     are fairly chaotic as testing was ramping up and being more targeted. April 1st is the
+                     date things seemed to settle down)
     """
     
     if statelist is None:
         # my own personal preferences for states I'm watching. :)
         statelist = ['florida', 'washington', 'texas', 'oklahoma', 'california', 'arizona']
         
-    for state in statelist:
-
+        state_url = state.lower().replace(" ","-")
         try:
-            with urllib.request.urlopen(f'https://covidtracking.com/data/state/{state.lower()}') as response:
+            with urllib.request.urlopen(f'https://covidtracking.com/data/state/{state_url}') as response:
                html = response.read()
         except urllib.error.HTTPError:
             continue #skip this "state" if it can't be read
@@ -67,7 +70,7 @@ def testcount_corrected(statelist=None):
             else:
                 plt.grid(True, color=color)  #give grid for ONLY first set of data
 
-            coldf = data.loc[datetime.datetime.strptime('2020-04-01','%Y-%m-%d'):, col].dropna()
+            coldf = data.loc[datetime.datetime.strptime(fromdate,'%Y-%m-%d'):, col].dropna()
 
             #main data
             plt.plot(coldf.index.values, coldf.values,'-', color=color)
