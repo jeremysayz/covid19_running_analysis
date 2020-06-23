@@ -3,6 +3,7 @@ import datetime
 
 import scipy.signal as spsig
 import pandas as pd
+import numpy as np
 
 import matplotlib.pyplot as plt
 
@@ -52,7 +53,7 @@ def testcount_corrected(statelist=None):
         #NOTE: make days with >50% new positive cases MISSING - these are likely bolus data dumps from things like prisons.
         # This means our running average will be UNDER estimating positive cases for the windows where these days fall. 
         # This missing value will cause the entire ROW to be dropped (so for both raw counts and %)
-        data.loc[data['New Cases (%)']>50, 'New Cases (%)'] = pd.np.nan
+        data.loc[data['New Cases (%)']>50, 'New Cases (%)'] = np.nan
 
         data = data.set_index('Date')
 
