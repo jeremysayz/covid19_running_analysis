@@ -1,9 +1,21 @@
 import urllib
 import datetime
 
-import matplotlib.pyplot as plt
 import scipy.signal as spsig
 import pandas as pd
+
+import matplotlib.pyplot as plt
+
+plt.style.use({
+        "axes.labelsize":20,
+        "font.size":18,
+        "lines.markersize":8,
+        "xtick.labelsize":18,
+        "ytick.labelsize":18,
+        "legend.fontsize":12,
+        "axes.titlesize":18,
+        "figure.figsize":[12, 8],
+    })
 
 def testcount_corrected(statelist=None):
     """Give plots for listed state(s) for total number of positives (by day) and PERCENT of positives (by day) 
