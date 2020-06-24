@@ -34,11 +34,13 @@ def testcount_corrected(statelist=None, fromdate="2020-04-01"):
         # my own personal preferences for states I'm watching. :)
         statelist = ['florida', 'washington', 'texas', 'oklahoma', 'california', 'arizona']
         
+    for state in statelist:
         state_url = state.lower().replace(" ","-")
         try:
             with urllib.request.urlopen(f'https://covidtracking.com/data/state/{state_url}') as response:
                html = response.read()
-        except urllib.error.HTTPError:
+        except urllib.error.HTTPError as err:
+            print(err)
             continue #skip this "state" if it can't be read
 
         parsed = pd.read_html(html)
@@ -83,6 +85,6 @@ def testcount_corrected(statelist=None, fromdate="2020-04-01"):
             plt.ylabel(lbl)
             plt.xticks(rotation=90)
 
-        plt.title("{} (as of {})".format(state.capitalize(), datetime.datetime.now().strftime("%Y-%m-%d")))
+        plt.title("{} (as of {})".format(state.title(), datetime.datetime.now().strftime("%Y-%m-%d")))
         plt.xlabel(data.index.name)
         plt.show()
